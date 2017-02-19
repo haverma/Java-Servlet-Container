@@ -1,0 +1,38 @@
+2017-02-11 21:22:39 DEBUG TestLog:13 - Hello this is a debug message
+2017-02-11 21:22:39 INFO  TestLog:14 - Hello this is an info message
+2017-02-11 21:22:39 ERROR TestLog:15 - Hello this is an error message
+2017-02-12 02:41:36 ERROR TestLog:137 - invalid HTTP request, Content Length is invalid
+2017-02-12 02:41:36 ERROR TestLog:142 - Invalid HTTP POST request received
+2017-02-12 02:42:09 ERROR TestLog:137 - invalid HTTP request, Content Length is invalid
+2017-02-12 02:42:16 ERROR TestLog:142 - Invalid HTTP POST request received
+2017-02-19 14:55:19 DEBUG TestLog:13 - Hello this is a debug message
+2017-02-19 14:55:19 INFO  TestLog:14 - Hello this is an info message
+2017-02-19 14:55:19 ERROR TestLog:15 - Hello this is an error message
+2017-02-19 14:55:27 DEBUG TestLog:13 - Hello this is a debug message
+2017-02-19 14:55:27 INFO  TestLog:14 - Hello this is an info message
+2017-02-19 14:55:27 ERROR TestLog:15 - Hello this is an error message
+2017-02-19 15:08:37 DEBUG TestLog:13 - Hello this is a debug message
+2017-02-19 15:08:37 INFO  TestLog:14 - Hello this is an info message
+2017-02-19 15:08:37 ERROR TestLog:15 - Hello this is an error message
+2017-02-19 15:45:51 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 15:48:14 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 15:48:39 DEBUG TestLog:13 - Hello this is a debug message
+2017-02-19 15:48:39 INFO  TestLog:14 - Hello this is an info message
+2017-02-19 15:48:39 ERROR TestLog:15 - Hello this is an error message
+2017-02-19 15:56:06 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 16:36:24 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 16:36:39 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 16:36:41 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 16:38:35 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 16:38:40 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 16:38:43 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 16:38:43 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 16:43:45 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 17:15:04 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 17:15:11 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 17:15:11 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 17:18:26 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 17:20:23 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 17:21:20 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 18:28:41 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-19 18:28:47 INFO  HttpServletResponseImpl:221 - Session is invaliated
