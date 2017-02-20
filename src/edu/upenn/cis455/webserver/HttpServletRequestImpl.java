@@ -46,7 +46,7 @@ class HttpServletRequestImpl implements HttpServletRequest {
 	private int remote_port = 0;
 	private Map<String, Object> request_line;
 	private String character_encoding = null;
-	private String content_type = null;
+	private String content_type = "text/html";
 	private Locale locale = null;
 	private ServletContextImpl sc = null;
 
@@ -93,7 +93,7 @@ class HttpServletRequestImpl implements HttpServletRequest {
 		// TODO Auto-generated method stub
 		Cookie[] cookies = null;
 		if(parsed_request.containsKey("cookies")){
-			Map<String, String> cookies_map = (Map<String, String>) parsed_request.get(cookies);
+			Map<String, String> cookies_map = (Map<String, String>) parsed_request.get("cookies");
 		    cookies = new Cookie[cookies_map.size()];
 		    int i= 0;
 		    for(Entry<String, String> entry : cookies_map.entrySet()){
@@ -150,7 +150,7 @@ class HttpServletRequestImpl implements HttpServletRequest {
 		// TODO Auto-generated method stub
 		String date_string = null;
 		if(parsed_headers.containsKey(arg0)){
-    		date_string = (String) parsed_headers.get(arg0);
+    		date_string = (String) parsed_headers.get(arg0.toLowerCase());
     		Date req_date = parseDate(date_string);
     		if(req_date == null){
     			throw new IllegalArgumentException();
@@ -171,7 +171,7 @@ class HttpServletRequestImpl implements HttpServletRequest {
 	 */
 	public String getHeader(String arg0) {
 		// TODO Auto-generated method stub
-		return (String)parsed_headers.get(arg0);
+		return (String)parsed_headers.get(arg0.toLowerCase());
 	}
 
 	/* (non-Javadoc)
@@ -180,7 +180,7 @@ class HttpServletRequestImpl implements HttpServletRequest {
 	public Enumeration getHeaders(String arg0) {
 		// TODO Auto-generated method stub
 		List<String> headers = new ArrayList<String>();
-		headers.add((String)parsed_headers.get(arg0));
+		headers.add((String)parsed_headers.get(arg0.toLowerCase()));
 		return Collections.enumeration(headers);
 	}
 
@@ -199,7 +199,7 @@ class HttpServletRequestImpl implements HttpServletRequest {
 		// TODO Auto-generated method stub
 		//casting the value to integer
 		if(parsed_headers.get(arg0).toString() == null) return -1;
-		int value = Integer.valueOf(parsed_headers.get(arg0).toString());
+		int value = Integer.valueOf(parsed_headers.get(arg0.toLowerCase()).toString());
 		return value;
 	}
 
@@ -217,7 +217,9 @@ class HttpServletRequestImpl implements HttpServletRequest {
 		// TODO Auto-generated method stub
 		//this method returns the path info.. as described in the servlet spec ... see page 39
 		Integer offset = this.request_uri.indexOf(this.servlet_path);
-		return this.request_uri.substring(offset+this.servlet_path.length());
+		String result = this.request_uri.substring(offset+this.servlet_path.length());
+		if(result.isEmpty()) return null;
+		return result;
 	}
 
 	/* (non-Javadoc)

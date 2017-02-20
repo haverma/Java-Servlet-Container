@@ -1,1 +1,45 @@
-HTTP Servlet Container with the support of GET, POST and HEAD methods along with sessions and cookies
+Full name:  Harsh Verma
+SEAS login: hverma
+
+Which features did you implement? 
+  Entire assignment
+
+Did you complete any extra-credit tasks? If so, which ones?
+  I completed the Extra credit for HTTPS support
+
+Any special instructions for building and running your solution?
+ Following steps can taken before running the HTTPs server
+  1.1.A pre-generated .jks file(hw1_ssl.jks) will be in resource folder of the submission zip, which can be used while running the HTTPs server. 
+  1.2.While running the project or building the webserver.jar, update the absolute path to this .jks file in HttpSslServer.java at line number 31
+ 
+  In case hw1_ssl.jks file needs to be generated again, following steps can be taken. 
+  1. Run the command: keytool -genkey -keyalg RSA -alias hw1 -keystore hw1_ssl.jks -validity 360 -keysize 2048
+  2. Enter the keystore password as "abcd1234", re-enter the same password.
+  3. Give First Name & Last Name as www.cis455.com(or any dummy domain name).
+  4. Give the organizational unit as cis455 and name of organization as Upenn
+  5. Give the name of city as Philadelphia, name of state as PA, two letter country code as US
+  6. Confirm the information by entering "yes" in the next question.
+  7. Press enter again to use the same keystore password as the key for the alias <hw1> as well.
+  8. hw1_ssl.jks will be generated in the folder where this command is run, we can copy the file to the HW1's resource folder and update it's 
+     absolute path as shown above in the step 1.2
+  
+  
+  To convert the HTTP server to HTTPs server
+  1. Go to the file ApplicationConstants.java in edu.upenn.cis455.webserver
+  2. Change the boolean variable useHTTPs at line 14 to true
+  3. Run/Build the Project
+  
+  Steps to change the HTTPs server back to HTTP server
+  1. Go to the file ApplicationConstants.java in edu.upenn.cis455.webserver
+  2. Change the boolean variable useHTTPs at line 14 to false
+  3. Run/Build the Project
+  
+Did you personally write _all_ the code you are submitting
+(other than code from the course web page)?
+  Yes
+
+Did you copy any code from the Internet, or from classmates?
+  No
+
+Did you collaborate with anyone on this assignment?
+  No

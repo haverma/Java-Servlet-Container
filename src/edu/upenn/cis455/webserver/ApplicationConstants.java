@@ -13,6 +13,7 @@ public class ApplicationConstants {
 	public static Map<String, HttpSessionImpl> sessions_table;
 	//change this to true to make it an HTTPs server
 	public static final boolean useHTTPs = false;
+	public static final String logfile = "C:/Users/harsh/Documents/Study/CIS555/share/HW1";
 	
 	static {
 		ErrorCodes = new HashMap<Integer, String>();
@@ -30,6 +31,7 @@ public class ApplicationConstants {
 		ErrorCodes.put(415, "Unsupported Media Type");
 		ErrorCodes.put(417, "Expectation Failed");
 		ErrorCodes.put(500, "Internal Server Error");
+		ErrorCodes.put(302, "Found");
 		MimeTypes = new HashMap<String, String>();
 		MimeTypes.put("jpg", "image/png");
 		MimeTypes.put("htm", "text/html");

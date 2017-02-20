@@ -23,7 +23,7 @@ class HttpSessionImpl implements HttpSession {
 	Date created_time = null;
 	long last_access_time;
 	UUID session_id;
-	int max_inactive_time = 3;
+	int max_inactive_time = 1800;
 	boolean session_valid;
 	boolean is_new;
 	ServletContext sc = null;

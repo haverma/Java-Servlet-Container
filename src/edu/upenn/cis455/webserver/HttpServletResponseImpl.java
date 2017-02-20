@@ -3,7 +3,6 @@ package edu.upenn.cis455.webserver;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.nio.channels.IllegalSelectorException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -275,7 +274,10 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 	 */
 	public String getContentType() {
 		// TODO Auto-generated method stub
-		return headers.get("content-type");
+		if(headers.containsKey("Content-Type"))
+		    return headers.get("Content-Type");
+		else
+			return "text/html";
 	}
 
 	/* (non-Javadoc)
@@ -320,7 +322,7 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 	/* (non-Javadoc)
 	 * @see javax.servlet.ServletResponse#setBufferSize(int)
 	 */
-	public void setBufferSize(int arg0) {
+	public void setBufferSize(int arg0) throws IllegalStateException{
 		// TODO Auto-generated method stub
         printout.setBuffer_size(arg0);
 	}
@@ -348,7 +350,7 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 		// TODO Auto-generated method stub
 		if(!isCommitted())
              printout.resetBuffer();
-		else throw new IllegalSelectorException();
+		else throw new IllegalStateException();
 	}
 
 	/* (non-Javadoc)
@@ -369,7 +371,7 @@ public class HttpServletResponseImpl implements HttpServletResponse {
             status_code = 200;
             headers = new HashMap<String, String>();
 		}
-		else throw new IllegalSelectorException();
+		else throw new IllegalStateException();
 
 	}
 

@@ -80,7 +80,6 @@ class HttpServer {
 				Handler h = parseWebdotxml(webxml);
 				loadServlets(h);
 				startServer();
-				System.out.println("done");
 				
 				
 				

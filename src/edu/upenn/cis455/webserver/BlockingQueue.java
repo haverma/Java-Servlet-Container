@@ -38,4 +38,8 @@ public class BlockingQueue {
 		
 		return blocking_queue.poll();
 	} 
+	
+	synchronized public int getSize(){
+		return blocking_queue.size();
+	}
 }

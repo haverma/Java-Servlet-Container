@@ -2,6 +2,7 @@ package edu.upenn.cis455.webserver;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -367,8 +368,8 @@ public class RequestProcessor implements Runnable {
 		String path_trunc = truncatePattern(servlet_path);
 		HttpSessionImpl session = null;
 		Map<String, String> cookies = (Map<String, String>) parsed_request.get("cookies");
-		if(cookies != null && cookies.containsKey("jsessionid")){
-			String sessionid = (String)cookies.get("jsessionid");
+		if(cookies != null && cookies.containsKey("JSESSIONID")){
+			String sessionid = (String)cookies.get("JSESSIONID");
 			if(ApplicationConstants.sessions_table.containsKey(sessionid)){
 				session = ApplicationConstants.sessions_table.get(sessionid);
 				//session.setLastAccessTime(new Date().getTime());
@@ -443,7 +444,10 @@ public class RequestProcessor implements Runnable {
 				}
 				String value_s = value.toString();
 				//putting the header keys and values
-				parsed_headers.put(key.toLowerCase(), value_s.toLowerCase());
+				if(key.equalsIgnoreCase("set-cookie") || key.equalsIgnoreCase("cookie"))
+					parsed_headers.put("cookie", value_s);
+				else
+					parsed_headers.put(key.toLowerCase(), value_s.toLowerCase());
 			}
 		}
 		//Check if host is present in the headers
@@ -478,7 +482,7 @@ public class RequestProcessor implements Runnable {
 				String[] tokens = cookies.split(";");
 				for(String token: tokens){
 					String[] cookie_token = token.split("=");
-					cookies_vals.put(cookie_token[0], cookie_token[1]);
+					cookies_vals.put(cookie_token[0].trim(), cookie_token[1].trim());
 					if(cookie_token[0].equals("JSESSIONID")){
 						HttpSessionImpl session_obj = ApplicationConstants.sessions_table.get(cookie_token[1]);
 						if(session_obj != null){
@@ -921,12 +925,14 @@ public class RequestProcessor implements Runnable {
 			for(ThreadStatus thread_stat: thread_list){
 				html.append("<tr><td>" + thread_stat.getThread_name() + "</td><td>" + thread_stat.getThread_status() + "</td></tr>");
 			}
-			html.append("</tbody></table><br/><form action=\"/shutdown\"><input type=\"submit\" value=\"Shutdown\"></form></body></html>");	
+			html.append("</tbody></table><br/><form action=\"/shutdown\"><input type=\"submit\" value=\"Shutdown\"></form>");	
+			String logcontent = readLogFiles();
+			html.append("<h3>Logs Recorded:</h3><p>" + logcontent + "</p>" + "</body></html>");
 		}
 		else{
 			try {
 				//System.out.println("Thread doing the shutdown is: " + Thread.currentThread().getName());
-				
+				destroyServlets();
 				HttpServer.pool.stopAllThreads();
 				//shutting down the main socket thread
 				HttpServer.server_running = false;
@@ -946,6 +952,47 @@ public class RequestProcessor implements Runnable {
 		String response = form_response(response_data);
 		out.print(response);
 		return true;
+	}
+	
+	public String readLogFiles(){
+		BufferedReader br = null;
+		FileReader filereader = null;
+		StringBuilder sb = new StringBuilder();
+		try{
+			String filepath = ApplicationConstants.logfile + "/log/log.out";
+			filereader = new FileReader(filepath);
+			br = new BufferedReader(filereader);
+			String line = null;
+			while(true){
+				line = br.readLine();
+				if(line == null) break;
+				sb.append(line);
+				sb.append("<br>");
+				
+			}
+		}
+		catch(Exception e){
+			log.error("Error reading the log file " + e.getMessage());
+		}
+		finally{
+			try {
+				br.close();
+				filereader.close();
+			} catch (IOException e) {
+				log.error("Error while closing the log file");
+			}
+			
+		}
+		return sb.toString();
+	}
+	
+	
+	//this method destroys the sevlets
+	public void destroyServlets(){
+		for(Entry<String, HttpServlet> entry : HttpServer.servlet_map.entrySet()){
+			//destroying everything
+			entry.getValue().destroy();
+		}
 	}
 	
 	//Getting the thread status

@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 public class BufferedPrintWriter extends PrintWriter {
 	// Starting the logger
 	static Logger log = Logger.getLogger(TestLog.class.getName());
-	private int buffer_size;
+	private int buffer_size = 1000;
 	private boolean committed;
 	private List<Cookie> cookies = new ArrayList<Cookie>();
 	private int status = 200;
@@ -45,6 +45,12 @@ public class BufferedPrintWriter extends PrintWriter {
 	}
 
 
+	@Override
+	public void close() {
+	    flush();
+	    super.close();
+	}
+	
 	@Override
 	public void write(String s) {
 		if (buffer.length() + s.length() >= buffer.capacity())
@@ -94,6 +100,7 @@ public class BufferedPrintWriter extends PrintWriter {
 	
 	@Override
 	public void flush() {
+		//log.info("Flushing the buffer");
 		try {
 			if (!committed) {
 				out.print("HTTP/1.1 " + status + " " + ApplicationConstants.ErrorCodes.get(status) + "\r\n");
@@ -114,7 +121,7 @@ public class BufferedPrintWriter extends PrintWriter {
 					StringBuilder cookies_value = new StringBuilder();
 					for(Cookie cookie_temp : cookies){
 						StringBuilder cookie_entry = new StringBuilder("Set-Cookie: " + cookie_temp.getName() + "=" + cookie_temp.getValue());
-						if(cookie_temp.getMaxAge() > 0)
+						if(cookie_temp.getMaxAge() != -1)
 							cookie_entry.append(";Max-Age=" + cookie_temp.getMaxAge());
 						if(cookie_temp.getDomain() != null)
 							cookie_entry.append(";Domain=" + cookie_temp.getDomain());
@@ -130,9 +137,11 @@ public class BufferedPrintWriter extends PrintWriter {
 					
 				}
 				out.print("\r\n");
+				//out.write("haha".getBytes());
 				out.write(buffer.toString().getBytes());
 				committed = true;
 			} else {
+				//out.write("bobo".getBytes());
 				out.write(buffer.toString().getBytes());
 			}
 		} catch (IOException e) {
