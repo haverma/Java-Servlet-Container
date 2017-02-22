@@ -16,12 +16,14 @@ import org.apache.log4j.Logger;
 
 public class BufferedPrintWriter extends PrintWriter {
 	// Starting the logger
-	static Logger log = Logger.getLogger(TestLog.class.getName());
+	static Logger log = Logger.getLogger(BufferedPrintWriter.class.getName());
 	private int buffer_size = 1000;
 	private boolean committed;
+	//storing the cookies
 	private List<Cookie> cookies = new ArrayList<Cookie>();
 	private int status = 200;
-	public Map<String, String> headers;
+	//Map for headers
+	private Map<String, String> headers;
 	private PrintStream out = null;
 	private StringBuffer buffer = null;
 	private HttpServletRequestImpl rq= null;
@@ -29,8 +31,10 @@ public class BufferedPrintWriter extends PrintWriter {
 	BufferedPrintWriter(PrintStream out, List<Cookie> cookies, HttpServletRequestImpl req) {
 		super(out);
 		this.out = out;
+		//Storing the cookies
 		this.cookies = cookies;
 		this.headers = new HashMap<String, String>();
+		//setting the buffer size
 		this.buffer = new StringBuffer(buffer_size);
 		this.rq = req;
 	}
@@ -41,12 +45,14 @@ public class BufferedPrintWriter extends PrintWriter {
 		this.cookies = cookies;
 		this.headers = headers;
 		this.buffer = new StringBuffer(buffer_size);
+		//Httpservlet request object
 		this.rq = req;
 	}
 
 
 	@Override
 	public void close() {
+		//flushing and closing the writer
 	    flush();
 	    super.close();
 	}
@@ -101,8 +107,10 @@ public class BufferedPrintWriter extends PrintWriter {
 	@Override
 	public void flush() {
 		//log.info("Flushing the buffer");
+		//checking the commit flag
 		try {
 			if (!committed) {
+				//writing the request line
 				out.print("HTTP/1.1 " + status + " " + ApplicationConstants.ErrorCodes.get(status) + "\r\n");
 				// writing headers
 				for (Entry<String, String> entry : headers.entrySet()) {
@@ -120,6 +128,7 @@ public class BufferedPrintWriter extends PrintWriter {
 				if(cookies.size() > 0){
 					StringBuilder cookies_value = new StringBuilder();
 					for(Cookie cookie_temp : cookies){
+						//setting the various attributes
 						StringBuilder cookie_entry = new StringBuilder("Set-Cookie: " + cookie_temp.getName() + "=" + cookie_temp.getValue());
 						if(cookie_temp.getMaxAge() != -1)
 							cookie_entry.append(";Max-Age=" + cookie_temp.getMaxAge());
@@ -138,6 +147,7 @@ public class BufferedPrintWriter extends PrintWriter {
 				}
 				out.print("\r\n");
 				//out.write("haha".getBytes());
+				//writing the buffer
 				out.write(buffer.toString().getBytes());
 				committed = true;
 			} else {
@@ -151,11 +161,12 @@ public class BufferedPrintWriter extends PrintWriter {
 		}
 		resetBuffer();
 	}
-
+    //resetting the buffer for data
 	public void resetBuffer() {
 		buffer = new StringBuffer(buffer_size);
 	}
 
+	//These are the various getter and setter methods
 	public int getBuffer_size() {
 		return buffer_size;
 	}
@@ -189,6 +200,14 @@ public class BufferedPrintWriter extends PrintWriter {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	
+	public Map<String, String> getHeaders() {
+		return headers;
+	}
+
+	public void setHeaders(Map<String, String> headers) {
+		this.headers = headers;
 	}
 
 }

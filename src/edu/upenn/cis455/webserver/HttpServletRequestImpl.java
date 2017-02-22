@@ -31,7 +31,8 @@ import javax.servlet.http.HttpSession;
 /**
  * @author Todd J. Green
  */
-class HttpServletRequestImpl implements HttpServletRequest {
+//this method implements the HttpServlet request inteface from javax and its methods
+public class HttpServletRequestImpl implements HttpServletRequest {
 	//private Map<String, String> params = null;
 	private Properties m_params = new Properties();
 	private Properties m_props = new Properties();
@@ -51,11 +52,11 @@ class HttpServletRequestImpl implements HttpServletRequest {
 	private ServletContextImpl sc = null;
 
 	
-	HttpServletRequestImpl() {
+	public HttpServletRequestImpl() {
 		//this.params = new HashMap<String, String>();
 	}
 	
-	HttpServletRequestImpl(HttpSessionImpl session,  Map<String, Object> parsed_request, Map<String, Object> parsed_header, String servlet_path, ServletContextImpl sc) {
+	public HttpServletRequestImpl(HttpSessionImpl session,  Map<String, Object> parsed_request, Map<String, Object> parsed_header, String servlet_path, ServletContextImpl sc) {
 		//this.params = new HashMap<String, String>();
 		m_session = session;
 		this.parsed_request = parsed_request;
@@ -179,8 +180,19 @@ class HttpServletRequestImpl implements HttpServletRequest {
 	 */
 	public Enumeration getHeaders(String arg0) {
 		// TODO Auto-generated method stub
+		String header_value = (String) parsed_headers.get(arg0.toLowerCase());
 		List<String> headers = new ArrayList<String>();
-		headers.add((String)parsed_headers.get(arg0.toLowerCase()));
+		String[] tokens = header_value.split(",");
+		//handling multiple header values 
+		if(tokens.length > 1){
+			for(String token:tokens){
+				headers.add(token.trim());
+			}
+		}
+		else{
+			//if the header is singly valued
+			headers.add(header_value);
+		}
 		return Collections.enumeration(headers);
 	}
 
@@ -444,13 +456,13 @@ class HttpServletRequestImpl implements HttpServletRequest {
 	 */
 	public Enumeration<String> getParameterNames() {
 		Set<String> param_names = new HashSet<String>();
-		while(m_params.keys().hasMoreElements()){
-			String param = (String) m_params.keys().nextElement();
-			System.out.println(param);
+		Enumeration enum_names = m_params.keys();
+		while(enum_names.hasMoreElements()){
+			String param = (String) enum_names.nextElement();
 			param_names.add(param);
-			}
-		 final Enumeration<String> p_enum = Collections.enumeration(param_names);
-		 return p_enum;
+		}
+		final Enumeration<String> p_enum = Collections.enumeration(param_names);
+		return p_enum;
 	}
 
 	/* (non-Javadoc)
@@ -459,7 +471,7 @@ class HttpServletRequestImpl implements HttpServletRequest {
 	public String[] getParameterValues(String arg0) {
 		//gets array of values for given parameter
 		List<String> values = (List<String>) m_params.get(arg0);
-		return (String[]) values.toArray();
+		return values.toArray(new String[0]);
 	}
 
 	/* (non-Javadoc)
@@ -468,8 +480,10 @@ class HttpServletRequestImpl implements HttpServletRequest {
 	public Map<String, List<String>> getParameterMap() {
 		// TODO Auto-generated method stub
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
-		for (final String name: m_params.stringPropertyNames())
-		    map.put(name, (List<String>)m_params.get(name));;
+		for (Entry<Object, Object> entry: m_params.entrySet()){
+			List<String> value = (List<String>) entry.getValue();
+		    map.put((String)entry.getKey(), value);
+		}
 		return map;
 	}
 

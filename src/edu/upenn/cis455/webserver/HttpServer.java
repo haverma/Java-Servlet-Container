@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -28,38 +29,20 @@ class HttpServer {
     public static ServerSocket server_sock_plain = null;
     public static ServerSocket server_sock_ssl = null;
     public static String webxml = null;
+    public static int session_timeout_global = -1;
     //map to store the servlet names and the corresponding HTTPServlets objects
     public static Map<String, HttpServlet> servlet_map = new HashMap<String, HttpServlet>();
-    
+    static Logger log = Logger.getLogger(HttpServer.class.getName());
     private static void usage() {
-		System.err.println("usage: java TestHarness <path to web.xml> " 
-				+ "[<GET|POST> <servlet?params> ...]");
+		System.err.println("For usage see the READ ME file !");
 	}
 	public static void main(String args[]) {
 		
 		// Checking the right number of parameters
-		if (args.length != 3 && args.length%2 != 0) {
+		if (args.length != 3 && args.length != 0) {
 			usage();
 		}
-		//assigning port and work dir
-		else if (args.length == 2) {
-			try{
-				port = Integer.valueOf(args[0].trim());
-				//Checking the port to be valid
-				if(port < 1){
-					System.out.println("Error: Port should be positive !");
-					System.exit(1);
-				}
-				if(args[1].charAt(args[1].length()-1) == '/') args[1] = args[1].substring(0, args[1].length()-1); 		
-				work_dir = args[1];
-			}
-			catch(NumberFormatException e){
-				//Arguments are not correct
-				System.out.println("Run the jar with the arguments: Port Root_Web_Directory (Port should be a Positive Number)");
-				System.exit(1);
-			}
-
-		} else if(args.length == 0) {
+		else if(args.length == 0) {
 			//Printing the server information
 			System.out.println("Harsh Verma");
 			System.out.println("hverma");
@@ -77,8 +60,13 @@ class HttpServer {
 				if(args[1].charAt(args[1].length()-1) == '/') args[1] = args[1].substring(0, args[1].length()-1); 		
 				work_dir = args[1];
 				webxml = args[2];
+				//parsing the webxml file
 				Handler h = parseWebdotxml(webxml);
+				//loading servlet classes
+				log.info("Loading the servlets");
 				loadServlets(h);
+				log.info("Starting the server");
+				//starting the server socket
 				startServer();
 				
 				
@@ -116,27 +104,33 @@ class HttpServer {
 		return fc;
 	}
 	
+	//this function creates the servlets
 	public static HashMap<String,HttpServlet> createServlets(Handler h, ServletContextImpl fc) throws Exception{
+		//intitlizeing the servlets
+		if(h.session_timeout != -1) session_timeout_global = h.session_timeout;
 		HashMap<String,HttpServlet> servlets = new HashMap<String,HttpServlet>();
 		for (Entry<String, String> entry : h.m_servlet_url.entrySet()) {
 			String servletName = entry.getValue();
 			ServletConfigImpl config = new ServletConfigImpl(servletName, fc);
 			String className = h.m_servlets.get(servletName);
 			Class servletClass = Class.forName(className);
+			//creating the new instancess of servlets
 			HttpServlet servlet = (HttpServlet) servletClass.newInstance();
 			HashMap<String,String> servletParams = h.m_servletParams.get(servletName);
+			//populating the config
 			if (servletParams != null) {
 				for (String param : servletParams.keySet()) {
 					config.setInitParam(param, servletParams.get(param));
 				}
 			}
+			//intializing the servlets with config
 			servlet.init(config);
 			servlets.put(entry.getKey(), servlet);
 		}
 		return servlets;
 	}
 	
-	
+	//this method parses theh xml and adds the url-patterns
 	private static Handler parseWebdotxml(String webdotxml) throws Exception {
 		Handler h = new Handler();
 		File file = new File(webdotxml);
@@ -150,6 +144,7 @@ class HttpServer {
 		return h;
 	}
 	
+	//handle for web xml SAX parser
 	static class Handler extends DefaultHandler {
 		public void startElement(String uri, String localName, String qName, Attributes attributes) {
 			if (qName.compareTo("servlet-name") == 0) {
@@ -164,20 +159,26 @@ class HttpServer {
 				m_state = (m_state == 3) ? 10 : 20;
 			} else if (qName.compareTo("param-value") == 0) {
 				m_state = (m_state == 10) ? 11 : 21;
+			}else if(qName.compareTo("session-timeout") == 0){
+				m_state = 29;
 			}
+			//adding the servlet mapping
 			else if (qName.compareTo("servlet-mapping") == 0){
 				m_state = 5;
 			}
+			//adding the url pattern
 			else if (qName.compareTo("url-pattern") == 0){
 				m_state = 7;
 			}
 			else if (qName.compareTo("load-on-startup") == 0){
 				load_startup.add(m_servletName);
 			}
+			//adding the display name
 			else if (qName.compareTo("display-name") == 0){
 				m_state = 9;
 			}
 		}
+		//this function loads the text from each xml nodes
 		public void characters(char[] ch, int start, int length) {
 			String value = new String(ch, start, length);
 			if (m_state == 1) {
@@ -199,6 +200,10 @@ class HttpServer {
 				m_servlets.put(m_servletName, value);
 				m_state = 0;
 			}
+			else if (m_state == 29) {
+				session_timeout = Integer.parseInt(value);
+				m_state = 0;
+			}
 			else if (m_state == 10 || m_state == 20) {
 				m_paramName = value;
 			} else if (m_state == 11) {
@@ -211,6 +216,7 @@ class HttpServer {
 				m_state = 0;
 			} else if (m_state == 21) {
 				if (m_paramName == null) {
+					//handling the errors
 					System.err.println("Servlet parameter value '" + value + "' without name");
 					System.exit(-1);
 				}
@@ -219,6 +225,7 @@ class HttpServer {
 					p = new HashMap<String,String>();
 					m_servletParams.put(m_servletName, p);
 				}
+				//putting the param names for servlet parameters (init)
 				p.put(m_paramName, value);
 				m_paramName = null;
 				m_state = 0;
@@ -234,6 +241,7 @@ class HttpServer {
 		HashMap<String,HashMap<String,String>> m_servletParams = new HashMap<String,HashMap<String,String>>();
 		Set<String> load_startup = new HashSet<String>();
 		String display_name = null;
+		Integer session_timeout = -1;
 	}
 	
 	public static void startServer(){

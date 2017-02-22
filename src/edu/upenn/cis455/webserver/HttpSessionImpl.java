@@ -17,7 +17,8 @@ import org.apache.log4j.Logger;
 /**
  * @author Todd J. Green
  */
-class HttpSessionImpl implements HttpSession {
+//This class implements the session interface from java servlets
+public class HttpSessionImpl implements HttpSession {
 	//attribute to hold the session variables
 	Map<String, Object> attributes = new HashMap<String, Object>();
 	Date created_time = null;
@@ -44,6 +45,7 @@ class HttpSessionImpl implements HttpSession {
 		session_valid = true;
 		session_id = UUID.randomUUID();
 		this.sc = sc;
+		if(HttpServer.session_timeout_global != -1) max_inactive_time = HttpServer.session_timeout_global*60;
 	}
 	
 	public long getCreationTime() {
@@ -198,7 +200,9 @@ class HttpSessionImpl implements HttpSession {
 	 */
 	public void invalidate() {
 		if(isValid()){
+			ApplicationConstants.sessions_table.remove(getId());
 			session_valid = false;
+			log.info("Session is invalidated");
 		}
 		else
 			throw new IllegalStateException();

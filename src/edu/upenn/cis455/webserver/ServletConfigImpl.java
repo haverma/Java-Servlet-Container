@@ -14,6 +14,7 @@ class ServletConfigImpl implements ServletConfig {
 	public ServletConfigImpl(String name, ServletContextImpl context) {
 		this.name = name;
 		this.context = context;
+		//Initializing the parameters for servlet config
 		initParams = new HashMap<String,String>();
 	}
 

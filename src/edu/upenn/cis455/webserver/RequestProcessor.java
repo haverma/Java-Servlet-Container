@@ -52,6 +52,11 @@ public class RequestProcessor implements Runnable {
     //supported methods
 	private Set<String> methods = new HashSet<String>(Arrays.asList("GET",
 			"HEAD", "POST"));
+	
+	//This constructor is for testting
+	public RequestProcessor(){
+		
+	}
 
 	public RequestProcessor(Socket sock, ThreadStatus status) {
 		client_sock = sock;
@@ -212,7 +217,7 @@ public class RequestProcessor implements Runnable {
 		}
 		parseCookies();
 		populate_message_body(in, out);
-		//serve request
+		//serve request using servlets or static resources
 		if(!requestDispatcher(out)){
 			out.print(formErrorResponse(response_data));
 			return;
@@ -257,7 +262,9 @@ public class RequestProcessor implements Runnable {
 			servlet_req = getMatchingServlet(tokens[0], servlet_path);
 		}
 		if(servlet_req != null){
+			//invoking the servlets with instance
 			//check here todo how to pass the output stream for response
+			//log.info("Invoking the servlet with path " + servlet_path.toString());
 		    return invokeServlet(servlet_req, servlet_path, out);
 		}
 		//none of the url-patterns matched
@@ -268,6 +275,7 @@ public class RequestProcessor implements Runnable {
 	
 	//extracting the parameters
 	public void extractParams(String param_string){
+		//parsing and extracting the arguments from the query string or body
 		String[] tokens = param_string.split("\\&");
 		for(String token: tokens){
 			int equal_index = token.indexOf("=");
@@ -380,6 +388,7 @@ public class RequestProcessor implements Runnable {
 		servlet_request.setRemoteAddr(remote_addr);
 		servlet_request.setRemoteHost(host_name);
 		servlet_request.setRemotePort(this.port);
+		//initializing the parameters
 		for(Entry<String, List<String>> params : parameter_values.entrySet()){
 			for(String value : params.getValue()){
 				servlet_request.setParameter(params.getKey(), value);
@@ -388,11 +397,12 @@ public class RequestProcessor implements Runnable {
 		}
 		HttpServletResponseImpl servlet_response = new HttpServletResponseImpl(out, parsed_request, servlet_request);
 		try {
+			//calling the servlet with the request and response objects
 			servlet.service(servlet_request, servlet_response);
 			servlet_response.flushBuffer();;
 		} catch (ServletException | IOException e) {
 			// TODO Auto-generated catch block
-			log.error("Error in Service Method " + e.getMessage());
+			log.error("Error in Service Method while invoking servlet" + e.getMessage());
 			response_data.put("Error", 500);
 			return false;
 		}
@@ -400,6 +410,7 @@ public class RequestProcessor implements Runnable {
 	}
 	
 	public String truncatePattern(StringBuilder input){
+		//handle the URL pattern with wild card
 		if(!(input.charAt(0)=='/'))input.insert(0, "/");
 		if(input.toString().equals("/*")) return "";
 		if(input.toString().endsWith("/")) return input.toString().substring(0, input.length()-1);
@@ -475,10 +486,12 @@ public class RequestProcessor implements Runnable {
 	}
 	
 	public void parseCookies(){
+		//this method parses and extracts the cookie from the request
 		if(parsed_headers.containsKey("cookie")){
 			try{
 				Map<String, String> cookies_vals = new HashMap<String, String>();
 				String cookies = (String)parsed_headers.get("cookie");
+				//cookies with ; as delimeter
 				String[] tokens = cookies.split(";");
 				for(String token: tokens){
 					String[] cookie_token = token.split("=");
@@ -486,6 +499,7 @@ public class RequestProcessor implements Runnable {
 					if(cookie_token[0].equals("JSESSIONID")){
 						HttpSessionImpl session_obj = ApplicationConstants.sessions_table.get(cookie_token[1]);
 						if(session_obj != null){
+							//if the session object was found then make it as old
 							session_obj.is_new = false;
 						}
 					}
@@ -639,7 +653,8 @@ public class RequestProcessor implements Runnable {
 		response.append("Connection: close" + lf);
 		response.append(lf);
 		//no body for 304
-		if(error_code != 304) response.append(html);	
+		if(error_code != 304 && !method_name.equals("HEAD")) 
+			response.append(html);	
 		return response.toString();
 
 	}
@@ -790,6 +805,7 @@ public class RequestProcessor implements Runnable {
 
 		// checking if the resource exists
 		if (!resource.exists()) {
+			log.error("Not able to find the requested resouce");
 			response_data.put("Error", 404);
 			return false;
 		}
@@ -868,7 +884,7 @@ public class RequestProcessor implements Runnable {
 			return true;
 			
 		} catch (IOException e) {
-			System.out.println("Error while reading the file " + file.getName());
+			log.error("Error while reading the file");
 			response_data.put("Error", 500);
 			return false;
 		}

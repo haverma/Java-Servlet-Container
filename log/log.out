@@ -1,50 +1,68 @@
-2017-02-11 21:22:39 DEBUG TestLog:13 - Hello this is a debug message
-2017-02-11 21:22:39 INFO  TestLog:14 - Hello this is an info message
-2017-02-11 21:22:39 ERROR TestLog:15 - Hello this is an error message
-2017-02-12 02:41:36 ERROR TestLog:137 - invalid HTTP request, Content Length is invalid
-2017-02-12 02:41:36 ERROR TestLog:142 - Invalid HTTP POST request received
-2017-02-12 02:42:09 ERROR TestLog:137 - invalid HTTP request, Content Length is invalid
-2017-02-12 02:42:16 ERROR TestLog:142 - Invalid HTTP POST request received
-2017-02-19 14:55:19 DEBUG TestLog:13 - Hello this is a debug message
-2017-02-19 14:55:19 INFO  TestLog:14 - Hello this is an info message
-2017-02-19 14:55:19 ERROR TestLog:15 - Hello this is an error message
-2017-02-19 14:55:27 DEBUG TestLog:13 - Hello this is a debug message
-2017-02-19 14:55:27 INFO  TestLog:14 - Hello this is an info message
-2017-02-19 14:55:27 ERROR TestLog:15 - Hello this is an error message
-2017-02-19 15:08:37 DEBUG TestLog:13 - Hello this is a debug message
-2017-02-19 15:08:37 INFO  TestLog:14 - Hello this is an info message
-2017-02-19 15:08:37 ERROR TestLog:15 - Hello this is an error message
-2017-02-19 15:45:51 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 15:48:14 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 15:48:39 DEBUG TestLog:13 - Hello this is a debug message
-2017-02-19 15:48:39 INFO  TestLog:14 - Hello this is an info message
-2017-02-19 15:48:39 ERROR TestLog:15 - Hello this is an error message
-2017-02-19 15:56:06 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 16:36:24 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 16:36:39 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 16:36:41 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 16:38:35 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 16:38:40 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 16:38:43 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 16:38:43 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 16:43:45 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 17:15:04 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 17:15:11 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 17:15:11 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 17:18:26 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 17:20:23 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 17:21:20 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 18:28:41 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 18:28:47 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 21:58:20 INFO  TestLog:97 - Flushing the buffer
-2017-02-19 21:58:20 INFO  TestLog:97 - Flushing the buffer
-2017-02-19 21:59:03 INFO  TestLog:97 - Flushing the buffer
-2017-02-19 21:59:03 INFO  TestLog:97 - Flushing the buffer
-2017-02-19 22:10:19 INFO  TestLog:97 - Flushing the buffer
-2017-02-19 22:10:52 INFO  TestLog:97 - Flushing the buffer
-2017-02-19 23:17:50 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-19 23:17:50 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-20 00:10:57 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-20 00:11:46 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-20 03:58:30 INFO  HttpServletResponseImpl:221 - Session is invaliated
-2017-02-20 04:00:06 INFO  HttpServletResponseImpl:221 - Session is invaliated
+2017-02-21 18:25:35 ERROR RequestProcessor:808 - Not able to find the requested resouce
+2017-02-21 18:26:20 INFO  HttpServer:67 - Loading the servlets
+2017-02-21 18:26:21 INFO  HttpServer:69 - Starting the server
+2017-02-21 18:26:29 ERROR RequestProcessor:808 - Not able to find the requested resouce
+2017-02-21 19:01:04 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:01:04 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:08:26 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:08:26 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:09:39 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:09:39 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:10:48 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:10:49 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:12:03 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:12:03 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:12:52 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:12:52 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:14:01 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:14:02 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:14:53 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:14:53 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:15:33 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:15:33 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:16:34 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:16:34 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:17:20 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:17:20 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:18:41 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:18:42 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:19:49 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:19:49 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:20:34 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:20:34 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:21:24 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:21:24 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:22:01 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:22:01 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:22:43 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:22:44 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:23:30 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:23:30 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:24:03 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:24:03 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:24:40 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:24:40 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:25:47 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:25:47 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:26:26 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:26:26 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:27:05 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:27:05 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:28:14 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:28:14 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:28:55 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:28:56 INFO  HttpServer:68 - Starting the server
+2017-02-21 19:29:51 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 19:29:51 INFO  HttpServer:68 - Starting the server
+2017-02-21 20:13:25 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 20:13:25 INFO  HttpServer:68 - Starting the server
+2017-02-21 20:13:31 ERROR RequestProcessor:808 - Not able to find the requested resouce
+2017-02-21 20:14:16 INFO  HttpServletResponseImpl:205 - Session is invalidated
+2017-02-21 20:15:10 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 20:15:10 INFO  HttpServer:68 - Starting the server
+2017-02-21 20:15:28 INFO  HttpServer:66 - Loading the servlets
+2017-02-21 20:15:28 INFO  HttpServer:68 - Starting the server
+2017-02-21 20:15:38 INFO  HttpServletResponseImpl:205 - Session is invalidated
+2017-02-22 01:11:05 INFO  HttpServletResponseImpl:225 - Session is invaliated
+2017-02-22 01:11:05 INFO  HttpServletResponseImpl:205 - Session is invalidated
+2017-02-22 01:11:05 WARN  RequestProcessor:357 - Percent not followed by valid Character ASCII

@@ -13,7 +13,7 @@ public class ApplicationConstants {
 	public static Map<String, HttpSessionImpl> sessions_table;
 	//change this to true to make it an HTTPs server
 	public static final boolean useHTTPs = false;
-	public static final String logfile = "C:/Users/harsh/Documents/Study/CIS555/share/HW1";
+	public static final String logfile = "/media/sf_share/HW1";
 	
 	static {
 		ErrorCodes = new HashMap<Integer, String>();

@@ -5,18 +5,21 @@ import javax.servlet.*;
 import org.apache.tools.ant.types.FlexInteger;
 
 import java.io.File;
+import java.net.URL;
 import java.util.*;
 
 /**
  * @author Nick Taylor
  */
-class ServletContextImpl implements ServletContext {
+//This class implements the servlet context
+public class ServletContextImpl implements ServletContext {
 	private HashMap<String,Object> attributes;
 	private HashMap<String,String> initParams;
 	private String display_name;
 	
 	public ServletContextImpl(String display_name) {
 		attributes = new HashMap<String,Object>();
+		//init parameters
 		initParams = new HashMap<String,String>();
 		this.display_name = display_name;
 	}
@@ -67,10 +70,15 @@ class ServletContextImpl implements ServletContext {
 	public String getRealPath(String path) {
 		//not sure Check
 		if(path.startsWith("/")) path = path.substring(1);
-		String full_path = HttpServer.work_dir + File.separator + path;
+		URL location = ServletContextImpl.class.getProtectionDomain().getCodeSource().getLocation();
+        String folder_path = location.getFile();
+        String full_path = folder_path + path;
 		File file = new File(full_path);
-		if(file.exists()) return full_path;
-		else return null;
+		if(file.exists()) 
+			return full_path;
+		else 
+			return null;
+
 	}
 	
 	public RequestDispatcher getRequestDispatcher(String name) {

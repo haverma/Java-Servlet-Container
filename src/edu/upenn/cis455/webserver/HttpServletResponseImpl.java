@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 //check when to write and flush the bufferedprintwriter
 public class HttpServletResponseImpl implements HttpServletResponse {
-
+//This class implements the Response
 	/* (non-Javadoc)
 	 * @see javax.servlet.http.HttpServletResponse#addCookie(javax.servlet.http.Cookie)
 	 */
@@ -97,6 +97,7 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 	 */
 	public void sendError(int arg0, String arg1) throws IOException {
 		// TODO Auto-generated method stub
+		//sending the html page for errors
 		if(isCommitted()){
 			throw new IllegalStateException();
 		}
@@ -105,13 +106,14 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 						+ arg0 + " "
 						+ arg1
 						+ "</title></head><body><h1>" + arg0 + " "
-						+ ApplicationConstants.ErrorCodes.get(arg0)
+						+ arg1
 						+ "</h1></body></html>");
-		this.status_code = arg0;
+		setStatus(arg0);
 		headers.put("content-type", "text/html");
 		headers.put("content-length", String.valueOf(html.length()));
 	    this.printout.resetBuffer();
-	    printout.headers = headers;
+	    this.printout.write(html);
+	    
 		printout.flush();
 		return;
 
@@ -132,11 +134,13 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 						+ "</title></head><body><h1>" + arg0 + " "
 						+ ApplicationConstants.ErrorCodes.get(arg0)
 						+ "</h1></body></html>");
-		this.status_code = arg0;
+		setStatus(arg0);
 		headers.put("content-type", "text/html");
 		headers.put("content-length", String.valueOf(html.length()));
+		
 	    this.printout.resetBuffer();
-	    printout.headers = headers;
+	    this.printout.write(html);
+	    
 		printout.flush();
 		return;
 	}
@@ -149,10 +153,12 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 		Map<String, Object> request_line = (Map<String, Object>)parsed_request.get("requestline");
 		String request_uri = (String)request_line.get("request_uri");
 		if (!isCommitted()) {
+			//handling the absolute URL
 			if(arg0.toLowerCase().startsWith("http://"))
 			{
 				headers.put("location", arg0);
 			}
+			//handling the relative url
 			else if(arg0.startsWith("/"))
 			{
 				headers.put("location", "http://localhost:" + HttpServer.port + arg0);
@@ -161,7 +167,6 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 			{
 				headers.put("location","http://localhost:" + HttpServer.port + request_uri + "/" + arg0); 
 			}
-			printout.headers = headers;
 			printout.flush();
 		} else {
 			throw new IllegalStateException();
@@ -251,6 +256,8 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 	public void setStatus(int arg0) {
 		// TODO Auto-generated method stub
 		status_code = arg0;
+		printout.resetBuffer();
+		printout.setStatus(arg0);
 	}
 
 	/* (non-Javadoc)
@@ -367,9 +374,12 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 	public void reset() {
 		// TODO Auto-generated method stub
 		if(!isCommitted()){
+			//re initializing the buffer
             printout.resetBuffer();
             status_code = 200;
             headers = new HashMap<String, String>();
+            printout.setHeaders(headers);
+            printout.setStatus(200);
 		}
 		else throw new IllegalStateException();
 
